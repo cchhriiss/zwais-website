@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZWAIS – AI & Digital Services</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>ZWAIS</h1>
+        <p>AI & Digital Solutions for Modern Businesses</p>
+    </header>
+
+    <nav>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="hero">
+        <h2>We Build Smart AI Solutions</h2>
+        <p>From AI-powered chatbots to full automation systems – we make it happen.</p>
+        <button onclick="openChatbot()">💬 Talk to Our AI</button>
+    </section>
+
+    <section id="services">
+        <h2>Our Services</h2>
+        <ul>
+            <li>🤖 AI Chatbots for Websites & WhatsApp</li>
+            <li>📧 Automated Email & Customer Service</li>
+            <li>✍️ AI Content Creation & SEO</li>
+            <li>📊 Knowledge Management Systems</li>
+            <li>🔗 API & CRM Integrations</li>
+            <li>☁️ Hosting & Maintenance</li>
+        </ul>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Email: hello@zweis.com</p>
+        <p>Or chat with our AI assistant below.</p>
+    </section>
+
+    <!-- Chatbot UI -->
+    <div id="chatbot">
+        <div id="chatbox"></div>
+        <input type="text" id="userInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
