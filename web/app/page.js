@@ -101,40 +101,83 @@ setMessages((prev) => [
 
 <ServiceSlider />
 
-      {/* Chatbot */}
-      {/* Chatbot */}
-<section id="chatbot" className="bg-white py-12 px-4 flex flex-col h-[70vh]">
-  <div className="flex-1 overflow-y-auto space-y-4">
-    {messages.map((m, i) => (
-      <div
-        key={i}
-        className={`max-w-[80%] p-3 rounded-2xl ${
-          m.role === 'user'
-            ? 'bg-black text-white self-end ml-auto'
-            : 'bg-gray-100 text-black'
-        }`}
-      >
-        {m.content}
-      </div>
-    ))}
+<section className="flex flex-col md:flex-row items-center my-16 px-6 md:px-12">
+  {/* Left: Team Image */}
+  <div className="md:w-1/2">
+    <img
+      src="/team.jpg"
+      alt="Our Team"
+      className="rounded-xl shadow-lg w-full object-cover"
+    />
   </div>
 
-  {/* Input Bar */}
-  <div className="border-t pt-4 mt-4 flex gap-2">
-    <input
-      className="flex-1 border border-gray-300 rounded-lg px-4 py-3 text-lg"
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-      placeholder="Type your message…"
-    />
-    <button
-      onClick={sendMessage}
-      className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 text-lg"
-    >
-      Send
-    </button>
+  {/* Right: About Text */}
+  <div className="md:w-1/2 md:pl-12 mt-8 md:mt-0">
+    <h2 className="text-3xl font-bold mb-4">About Us</h2>
+    <p className="text-lg text-gray-600 leading-relaxed">
+      We are a passionate team dedicated to delivering the highest quality
+      services for our clients. Our mission is to blend innovation,
+      creativity, and technical expertise to bring your ideas to life.
+    </p>
   </div>
 </section>
+
+      {/* Chatbot */}
+<section className="flex flex-col md:flex-row items-start my-16 px-6 md:px-12">
+  {/* Left: Chatbot Info */}
+  <div className="md:w-1/2 md:pr-12 mb-8 md:mb-0">
+    <h2 className="text-3xl font-bold mb-4">Our AI Chatbot</h2>
+    <p className="text-lg text-gray-600 leading-relaxed">
+      Our AI-powered chatbot is here to answer your questions 24/7.
+      Whether you need help understanding our services, booking a
+      consultation, or just want quick information, our chatbot is always
+      ready to assist you.
+    </p>
+    <p className="mt-4 text-lg text-gray-600 leading-relaxed">
+      Built with cutting-edge AI technology, it learns and adapts to give
+      you faster, more accurate responses every time you interact with it.
+    </p>
+  </div>
+
+  {/* Right: Chatbot Box */}
+  <div className="md:w-1/2 w-full">
+    <div className="bg-white border-2 border-black rounded-2xl p-4 h-[70vh] flex flex-col">
+      <div className="flex-1 overflow-y-auto space-y-4">
+        {messages.map((m, i) => (
+          <div
+            key={i}
+            className={`max-w-[80%] p-3 rounded-2xl ${
+              m.role === 'user'
+                ? 'bg-black text-white self-end ml-auto'
+                : 'bg-gray-100 text-black'
+            }`}
+          >
+            {m.content}
+          </div>
+        ))}
+      </div>
+
+      {/* Input Bar */}
+      <div className="pt-4 mt-4 flex gap-2">
+        <input
+          className="flex-1 border border-gray-300 rounded-lg px-4 py-3 text-lg"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type your message…"
+        />
+        <button
+          onClick={sendMessage}
+          className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 text-lg"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
 
       {/* Footer */}
