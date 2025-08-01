@@ -1,103 +1,149 @@
-import Image from "next/image";
+'use client'
+import { useState } from 'react'
+import ServiceSlider from './components/ServiceSlider'
+
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState([])
+  const [serviceIndex, setServiceIndex] = useState(0)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const services = [
+    {
+      title: "Chatbots & AI Integration",
+      description: "Custom-trained bots for lead gen, support & automation."
+    },
+    {
+      title: "Web Design",
+      description: "Responsive, fast and beautiful websites."
+    },
+    {
+      title: "Branding & Identity",
+      description: "Logos, colors, typography and full brand kits."
+    },
+    {
+      title: "Social Media Strategy",
+      description: "Content plans, ads, and engagement growth."
+    }
+  ]
+
+  const prevService = () => {
+    setServiceIndex(prev => prev === 0 ? services.length - 1 : prev - 1)
+  }
+  const nextService = () => {
+    setServiceIndex(prev => prev === services.length - 1 ? 0 : prev + 1)
+  }
+
+  const sendMessage = async () => {
+  if (!input.trim()) return;
+
+  const userMessage = { role: "user", content: input };
+  setMessages(prev => [...prev, userMessage]);
+  setInput('');
+
+  const res = await fetch('/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ message: input }),
+});
+
+const reply = await res.text(); // now it's plain text
+
+setMessages((prev) => [
+  ...prev,
+  { role: 'assistant', content: reply },
+]);
+
+
+  const reader = res.body.getReader();
+  let botMessage = { role: 'assistant', content: "" };
+  setMessages(prev => [...prev, botMessage]);
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    botMessage.content += new TextDecoder().decode(value);
+    setMessages(prev => {
+      const updated = [...prev];
+      updated[updated.length - 1] = { ...botMessage };
+      return updated;
+    });
+  }
+};
+
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Hero Section */}
+      <section className="h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white flex flex-col justify-center items-center text-center px-4 relative">
+        {/* Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-40"
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+
+        <div className="relative z-10">
+          <h1 className="text-5xl font-bold mb-4">We uncover brand potential</h1>
+          <p className="mb-8 max-w-xl">An agency with AI‑based service and interactive insights.</p>
+          <button
+            onClick={() => document.getElementById('chatbot').scrollIntoView({ behavior: 'smooth' })}
+            className="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-gray-200"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Talk to us
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+<ServiceSlider />
+
+      {/* Chatbot */}
+      {/* Chatbot */}
+<section id="chatbot" className="bg-white py-12 px-4 flex flex-col h-[70vh]">
+  <div className="flex-1 overflow-y-auto space-y-4">
+    {messages.map((m, i) => (
+      <div
+        key={i}
+        className={`max-w-[80%] p-3 rounded-2xl ${
+          m.role === 'user'
+            ? 'bg-black text-white self-end ml-auto'
+            : 'bg-gray-100 text-black'
+        }`}
+      >
+        {m.content}
+      </div>
+    ))}
+  </div>
+
+  {/* Input Bar */}
+  <div className="border-t pt-4 mt-4 flex gap-2">
+    <input
+      className="flex-1 border border-gray-300 rounded-lg px-4 py-3 text-lg"
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      placeholder="Type your message…"
+    />
+    <button
+      onClick={sendMessage}
+      className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 text-lg"
+    >
+      Send
+    </button>
+  </div>
+</section>
+
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-gray-300 py-8 text-center">
+        <div className="max-w-lg mx-auto space-y-2">
+          <p>ZWAI Services Agency – Vienna</p>
+          <p><a href="/impressum">Imprint</a> · <a href="/privacy">Privacy Policy</a></p>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
